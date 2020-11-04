@@ -26,6 +26,7 @@
                     <a class="dropdown-item" href="/views/tickets/see_tickets.php">See bought tickets</a>
                     <a class="dropdown-item" href="/views/account/settings.php">Account settings</a>
                     <a class="dropdown-item" href="/views/admin/change_tickets.php">Admin: Modify tickets</a>
+                    <a class="dropdown-item" href="/views/other_details.php">Other information</a>
                 </div>
 
             </li>
