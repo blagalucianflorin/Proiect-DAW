@@ -30,7 +30,7 @@ include_once($path);
 
                 <div class="card-body text-center w-100">
 
-                    <form class="w-100">
+                    <form class="w-100" name="login">
 
                         <div class="form-group">
                             <label for="email_input">Email address</label>

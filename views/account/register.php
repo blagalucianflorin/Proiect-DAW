@@ -1,3 +1,19 @@
+<?php
+
+session_start();
+
+function value_of_input ($variable)
+{
+	if (isset ($_SESSION[$variable]))
+	{
+	    $saved = $_SESSION[$variable];
+		unset ($_SESSION[$variable]);
+		return $saved;
+	}
+	return "";
+}
+
+?>
 <!doctype html>
 <html lang="en" style="height: 90%">
 
@@ -30,39 +46,42 @@ include_once($path);
 
                 <div class="card-body text-center w-100">
 
-                    <form class="w-100">
+                    <form class="w-100" name="register" method="post" action="/models/users.php">
 
                         <div class="form-group">
-                            <label for="name_input">Full Name</label>
-                            <input type="text" class="form-control" id="name_input">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email_input">Email address</label>
-                            <input type="email" class="form-control" id="email_input" aria-describedby="emailHelp">
+                            <label for="full_name_input">Full Name <i class="fas fa-signature"></i></label>
+                            <input type="text" class="form-control" id="full_name_input" name="full_name" value="<?php echo value_of_input ('full_name');?>">
                         </div>
 
                         <div class="form-group">
-                            <label for="email_input">Confirm Email address</label>
-                            <input type="email" class="form-control" id="email_confirm_input" aria-describedby="emailHelp">
+                            <label for="email_input">Email address <i class="fas fa-at"></i></label>
+                            <input type="email" class="form-control" id="email_input" aria-describedby="emailHelp" name="email" value="<?php echo value_of_input ('email');?>">
                         </div>
 
                         <div class="form-group">
-                            <label for="password_input">Password</label>
-                            <input type="password" class="form-control" id="password_input">
+                            <label for="email_confirm_input">Confirm Email address <i class="fas fa-at"></i><i class="fas fa-check"></i></label>
+                            <input type="email" class="form-control" id="email_confirm_input" aria-describedby="emailHelp" name="email_confirm" value="<?php echo value_of_input ('email_confirm');?>">
                         </div>
 
                         <div class="form-group">
-                            <label for="password_input">Confirm Password</label>
-                            <input type="password" class="form-control" id="password_confirm_input">
+                            <label for="password_input">Password <i class="fas fa-key"></i></label>
+                            <input type="password" class="form-control" id="password_input" name="password">
                         </div>
 
-                        <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="remeber_check">
-                            <label class="form-check-label" for="remeber_check">Remember me</label>
+                        <div class="form-group">
+                            <label for="password_input">Confirm Password <i class="fas fa-key"></i><i class="fas fa-check"></i></label>
+                            <input type="password" class="form-control" id="password_confirm_input" name="password_confirm">
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <?php if(isset($_SESSION['ERROR_MSG'])){?>
+                        <div class="card text-white bg-danger mb-3">
+                            <div class="card-body">
+                                <p class="card-text"><?php echo $_SESSION['ERROR_MSG']; ?></p>
+                            </div>
+                        </div>
+                        <?php unset($_SESSION['ERROR_MSG']); } ?>
+
+                        <button type="submit" class="btn btn-primary" name="register">Register</button>
 
                     </form>
 
