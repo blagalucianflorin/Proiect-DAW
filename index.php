@@ -47,6 +47,15 @@ include_once($path);
                     <h5>DEBUG</h5>
                     <p>To view pages other than the login and register ones, use the links in 'DEBUG' dropdown present in the navbar.</p>
 
+					<?php
+					if(isset($_SESSION['ERROR_MSG'])){?>
+                        <div class="card text-white bg-warning mb-3">
+                            <div class="card-body">
+                                <p class="card-text"><?php echo $_SESSION['ERROR_MSG']; ?></p>
+                            </div>
+                        </div>
+                    <?php unset($_SESSION['ERROR_MSG']); } ?>
+
                 </div>
 
             </div>
