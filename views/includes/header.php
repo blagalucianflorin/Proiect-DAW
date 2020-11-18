@@ -35,8 +35,10 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/permissions_controller.p
 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/views/tickets/search_trains.php">Search for trains</a>
-                    <a class="dropdown-item" href="/views/tickets/see_tickets.php">See bought tickets</a>
-                    <a class="dropdown-item" href="/views/account/account_activity.php">Account activity</a>
+                    <?php if (users_controller::is_logged_in ()) { ?>
+                        <a class="dropdown-item" href="/views/tickets/see_tickets.php">See bought tickets</a>
+                        <a class="dropdown-item" href="/views/account/account_activity.php">Account activity</a>
+                    <?php } ?>
 					<?php if (permissions_controller::is_admin ()) { ?>
                         <a class="dropdown-item" href="/views/admin/trains/select_route.php">Admin: Add Trains</a>
                         <a class="dropdown-item" href="/views/admin/routes/route_builder.php">Admin: Route Builder</a>
