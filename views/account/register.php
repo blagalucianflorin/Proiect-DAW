@@ -1,36 +1,24 @@
 <?php
 
-session_start();
+if (session_id () == '') session_start();
 
-function value_of_input ($variable)
-{
-	if (isset ($_SESSION[$variable]))
-	{
-	    $saved = $_SESSION[$variable];
-		unset ($_SESSION[$variable]);
-		return $saved;
-	}
-	return "";
-}
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/controller.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/users_controller.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/views/includes/essentials.php');
+
+if (users_controller::is_logged_in () != false)
+	controller::redirect ('/');
 
 ?>
+
 <!doctype html>
 <html lang="en" style="height: 90%">
 
-
-<?php
-$path = $_SERVER['DOCUMENT_ROOT'];
-$path .= "/views/includes/head.php";
-include_once($path);
-?>
+<?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/views/includes/head.php'); ?>
 
 <body class="h-100" style="background: #E8E8E8">
 
-<?php
-$path = $_SERVER['DOCUMENT_ROOT'];
-$path .= "/views/includes/header.php";
-include_once($path);
-?>
+<?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/views/includes/header.php'); ?>
 
 <div class="container-fluid h-100">
     <div class="row h-100 justify-content-center align-items-center">
@@ -46,7 +34,7 @@ include_once($path);
 
                 <div class="card-body text-center w-100">
 
-                    <form class="w-100" name="register" method="post" action="/models/users.php">
+                    <form class="w-100" name="register" method="post" action="/controllers/users_controller.php">
 
                         <div class="form-group">
                             <label for="full_name_input">Full Name <i class="fas fa-signature"></i></label>
@@ -81,7 +69,9 @@ include_once($path);
                         </div>
                         <?php unset($_SESSION['ERROR_MSG']); } ?>
 
-                        <button type="submit" class="btn btn-primary" name="register">Register</button>
+                        <input name="_action" type="hidden" value="REGISTER"/>
+
+                        <button type="submit" class="btn btn-primary">Register</button>
 
                     </form>
 
@@ -96,11 +86,7 @@ include_once($path);
     </div>
 </div>
 
-<?php
-$path = $_SERVER['DOCUMENT_ROOT'];
-$path .= "/views/includes/footer.php";
-include_once($path);
-?>
+<?php require_once ($_SERVER['DOCUMENT_ROOT'] . '/views/includes/footer.php'); ?>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
