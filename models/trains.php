@@ -146,4 +146,58 @@ class trains
 			}
 		return null;
 	}
+
+	/* Checks if there's seats available at a certain class in a certain train
+     *
+	 * @param	int	$train_id	Train to check for tickets
+	 * @param	int	$class		Class to search for tickets in
+	 *
+	 * @return	bool			True if seats are available, false otherwise
+	 */
+	public static function has_seats_available ($train_id, $class)
+	{
+		$db_manager = new database_manager ();
+		$train 		= $db_manager -> select (
+			'trains',
+			null,
+			"train_id='$train_id'"
+		)[0];
+
+		$wagons = json_decode(json_encode(json_decode ($train['seats'])), true);
+
+		for ($j = 0; $j < count($wagons); $j++)
+			if ($wagons[$j]['wagon_class'] == $class)
+				for ($i = 0; $i < count ($wagons[$j]['seats']); $i++)
+					if ($wagons[$j]['seats'][$i] == 0)
+						return (true);
+
+		return (false);
+	}
+
+	/*
+	 * Checks if a user has bought a seat on a train
+	 *
+	 * @param	int	$train_id	Train to check for tickets
+	 * @param	int	$user_id	User to check for tickets
+	 *
+	 * @return	bool			True if user has a seat on that train, false otherwise
+	 */
+	public static function user_has_seat ($train_id, $user_id)
+	{
+		$db_manager = new database_manager ();
+		$train 		= $db_manager -> select (
+			'trains',
+			null,
+			"train_id='$train_id'"
+		)[0];
+
+		$wagons = json_decode(json_encode(json_decode ($train['seats'])), true);
+
+		for ($j = 0; $j < count($wagons); $j++)
+				for ($i = 0; $i < count ($wagons[$j]['seats']); $i++)
+					if ($wagons[$j]['seats'][$i] == $user_id)
+						return (true);
+
+		return (false);
+	}
 }

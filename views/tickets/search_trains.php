@@ -98,6 +98,20 @@ error_reporting(E_ALL);
 
 							foreach ($trains as $key => $train) {
 
+							    $user_id            = users_controller::is_logged_in ();
+							    $train_id           = $train['train_id'];
+								$first_class_seats  = false;
+								$second_class_seats = false;
+
+							    if ($user_id != null)
+								{
+									$first_class_seats = trains_controller::has_seats_available ($train_id, 1);
+									$second_class_seats = trains_controller::has_seats_available ($train_id, 2);
+
+									$first_class_seats = $first_class_seats && !trains_controller::user_has_seat ($train_id, $user_id);
+									$second_class_seats = $second_class_seats && !trains_controller::user_has_seat ($train_id, $user_id);
+								}
+
 								$price = ($train['end_station'][1] - $train['start_station'][1]) * $train['km_cost'];
 								?>
 
@@ -122,7 +136,11 @@ error_reporting(E_ALL);
 
                                             <input type="hidden" name="_action" value="BUY_TICKET">
 
-                                            <input type="submit" class="btn btn-primary" value="Buy">
+                                            <input type="submit" class="btn btn-primary <?php
+                                                if (!$first_class_seats) echo 'disabled';
+                                            ?>" value="Buy" <?php
+											if (!$first_class_seats) echo 'disabled';
+											?>>
                                         </form>
                                     </td>
 
@@ -137,10 +155,13 @@ error_reporting(E_ALL);
                                             <input type="hidden" name="end_date" value="<?php echo $train['end_station'][2]; ?>">
                                             <input type="hidden" name="class" value="2">
 
-
                                             <input type="hidden" name="_action" value="BUY_TICKET">
 
-                                            <input type="submit" class="btn btn-primary" value="Buy">
+                                            <input type="submit" class="btn btn-primary <?php
+											if (!$second_class_seats) echo 'disabled';
+											?>" value="Buy" <?php
+											if (!$second_class_seats) echo 'disabled';
+											?>>
                                         </form>
                                     </td>
                                 </tr>

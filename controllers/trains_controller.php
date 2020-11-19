@@ -136,6 +136,31 @@ class trains_controller
 	{
 		return (trains::reserve_seat ($train_id, $class, $user_id));
 	}
+
+	/* Checks if there's seats available at a certain class in a certain train
+     *
+	 * @param	int	$train_id	Train to check for tickets
+	 * @param	int	$class		Class to search for tickets in
+	 *
+	 * @return	bool			True if seats are available, false otherwise
+	 */
+	public static function has_seats_available ($train_id, $class)
+	{
+		return (trains::has_seats_available ($train_id, $class));
+	}
+
+	/*
+	 * Checks if a user has bought a seat on a train
+	 *
+	 * @param	int	$train_id	Train to check for tickets
+	 * @param	int	$user_id	User to check for tickets
+	 *
+	 * @return	bool			True if user has a seat on that train, false otherwise
+	 */
+	public static function user_has_seat ($train_id, $user_id)
+	{
+		return (trains::user_has_seat ($train_id, $user_id));
+	}
 }
 
 if (isset($_POST['_action']) || isset($_GET['_action']))

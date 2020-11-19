@@ -26,6 +26,11 @@ class tickets_controller
 	public static function buy_ticket ($user_id, $train_id, $price, $start_station, $end_station,
 										$start_date, $end_date, $class)
 	{
+		if (trains_controller::user_has_seat ($train_id, $user_id))
+			controller::redirect_with_data ('/',
+				[
+					'ERROR_MSG' => 'You already have a ticket on that train'
+				]);
 		$position = trains_controller::reserve_seat ($train_id, $class, $user_id);
 
 		pretty_print ($position);
