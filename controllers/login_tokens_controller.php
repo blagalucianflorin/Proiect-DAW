@@ -8,14 +8,13 @@ class login_tokens_controller
 	 * Adds a new login token to the database
 	 *
 	 * @param	int		$user_id		User ID associated with the token
-	 * @param	string	$token			Login token
 	 * @param	string	$expiry_date	Data the token will expiry at
 	 *
-	 * @return	bool					True if added successfully, false otherwise
+	 * @return	bool					The token if added successfully, false otherwise
 	 */
-	public static function create ($user_id, $token, $expiry_date)
+	public static function create ($user_id, $expiry_date = null)
 	{
-		return (login_tokens::add_token ($user_id, $token, $expiry_date));
+		return (login_tokens::add_token ($user_id, $expiry_date));
 	}
 
 	/*

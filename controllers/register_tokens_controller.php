@@ -8,14 +8,13 @@ class register_tokens_controller
 	 * Adds a new register token to the database
 	 *
 	 * @param	int		$user_id		User ID associated with the token
-	 * @param	string	$token			Register token
-	 * @param	string	$expiry_date	Data the token will expiry at
+	 * @param	string	$expiry_date	Data the token will expiry  in format 'Y-M-D h:m:s'. Optional
 	 *
-	 * @return	bool					True if added successfully, false otherwise
+	 * @return	mixed					The token if added successfully, false otherwise
 	 */
-	public static function create ($user_id, $token, $expiry_date)
+	public static function create ($user_id, $expiry_date = null)
 	{
-		return (register_tokens::add_token ($user_id, $token, $expiry_date));
+		return (register_tokens::add_token ($user_id, $expiry_date));
 	}
 
 	/*

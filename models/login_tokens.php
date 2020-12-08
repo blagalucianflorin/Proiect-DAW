@@ -13,16 +13,27 @@ class login_tokens
 	 *
 	 * @return	bool					Returns true if added successfully and false otherwise
 	 */
-	public static function add_token($user_id, $token, $expiry_date)
+	public static function add_token($user_id, $expiry_date = null)
 	{
 		$db_manager	= new database_manager ();
+		$token 		= bin2hex (random_bytes (16));
+
+		if ($expiry_date === null)
+		{
+			$expiry_time = time () + 7 * 24 * 3600;
+			$expiry_date = date ('Y-m-d  G:i:s', $expiry_time);
+		}
 
 		$result = $db_manager -> insert (
 			"login_tokens",
 			['user_id', 'token', 'expiry_date'],
-			[$user_id, $token, $expiry_date]);
+			[$user_id, $token, $expiry_date]
+		);
 
-		return ($result == true);
+		if ($result == true)
+			return ($token);
+		else
+			return ($result);
 	}
 
 	/*

@@ -32,18 +32,13 @@ class users_controller extends controller
 			self::redirect_with_data ('/views/account/register.php', $result);
 
 		$user_id = $result;
-		$expiry_time = time () + 24 * 3600;
-		$register_token = bin2hex (random_bytes (16));
-		$expiry_date = date ('Y-m-d  G:i:s', $expiry_time);
 
-		register_tokens_controller::create ($user_id, $register_token, $expiry_date);
+		$register_token = register_tokens_controller::create ($user_id);
 		email_manager::activation_email ($email, $full_name, $register_token);
-		users_activity_controller::create ($result, 'Account created');
+		users_activity_controller::create ($user_id, 'Account created');
 
 		self::redirect_with_data ('/',
-			[
-				'NORMAL_MSG' => 'Account created. Click the register confirm link in the email you received'
-			]);
+									['NORMAL_MSG' => 'Account created. Check your email for the account confirmation']);
 	}
 
 	/*
@@ -69,13 +64,10 @@ class users_controller extends controller
 			self::redirect ('/');
 
 		users::activate ($user_id);
-
 		users_activity_controller::create ($user_id, 'Account activated');
 
 		self::redirect_with_data ('/views/account/login.php',
-			[
-				'NORMAL_MSG' => 'Account activated. You can login now'
-			]);
+									['NORMAL_MSG' => 'Account activated. You can login now']);
 	}
 
 	/*
@@ -109,39 +101,25 @@ class users_controller extends controller
 	public static function login ($email, $password, $remember_me)
 	{
 		if ($email == null)
-			self::redirect_with_data ('/views/account/login.php',
-				[
-					'ERROR_MSG' => 'Please enter an email'
-				]);
+			self::redirect_with_data ('/views/account/login.php', ['ERROR_MSG' => 'Please enter an email']);
 
 		if ($password == null)
-			self::redirect_with_data ('/views/account/login.php',
-				[
-					'ERROR_MSG' => 'Please enter a password',
-					'email' => $password
-				]);
+			self::redirect_with_data ('/views/account/login.php', ['ERROR_MSG' => 'Please enter a password',
+										'email' => $password]);
 
 		$result = users::check_credentials ($email, $password);
 		if ($result == null)
-			self::redirect_with_data ('/views/account/login.php',
-				[
-					'ERROR_MSG' => 'Email or password incorrect',
-					'email'		=> $email
-				]);
+			self::redirect_with_data ('/views/account/login.php', ['ERROR_MSG' => 'Email or password incorrect',
+										'email'	=> $email]);
 
-		$ua_controller = new users_activity_controller ();
 		if (is_array ($result))
 		{
-			$ua_controller -> create ($result[0], 'Attempted to log in');
-			self ::redirect_with_data ('/views/account/login.php',
-				[
-					'ERROR_MSG' => 'Email or password incorrect',
-					'email'		=> $email
-				]);
+			users_activity_controller::create ($result[0], 'Attempted to log in');
+			self ::redirect_with_data ('/views/account/login.php', ['ERROR_MSG' => 'Email or password incorrect',
+										'email'	=> $email]);
 		}
 
 		$user_id = $result;
-
 		if (self::is_activated ($user_id) == 0)
 		{
 			users_activity_controller::create ($user_id, 'Attempted to log in');
@@ -153,28 +131,18 @@ class users_controller extends controller
 		}
 
 		$expiry_time = time () + 7 * 24 * 3600;
-		$login_token = bin2hex (random_bytes (16));
-
-		$expiry_date = date ('Y-m-d  G:i:s', $expiry_time);
-
-		login_tokens_controller::create ($user_id, $login_token, $expiry_date);
+		$login_token = login_tokens_controller::create ($user_id);
 
 		if ($remember_me == true)
 		{
 			if (setcookie ('user_token', $login_token, $expiry_time, '/', 'blagalucianflorin.ro', true, true) == false)
-			{
 				self ::redirect_with_data ('/views/account/login.php',
-					[
-						'ERROR_MSG' => 'Failed to log in. Please try again later'
-					]);
-			}
+					['ERROR_MSG' => 'Failed to log in. Please try again later']);
 		}
 		else
-		{
 			$_SESSION['user_token'] = $login_token;
-		}
-
-		$ua_controller -> create ($user_id, 'Logged in');
+ 
+		users_activity_controller::create ($user_id, 'Logged in');
 
 		self::redirect ('/');
 	}

@@ -2,6 +2,7 @@
 
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/database/database_manager.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/security/validator.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/security/sanitizer.php');
 
 class users
 {
@@ -131,7 +132,7 @@ class users
 			if (password_verify ($password, $result[0]['password']) == true)
 				return ($result[0]['user_id']);
 			else
-				return (false);
+				return ([$result[0]['user_id']]);
 		}
 
 		return null;
