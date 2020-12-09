@@ -3,7 +3,11 @@
 if (session_id () == '') session_start();
 
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/models/users.php');
+
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/email/email_manager.php');
+
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/security/recaptcha.php');
+
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/controller.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/users_activity_controller.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/login_tokens_controller.php');
@@ -27,6 +31,9 @@ class users_controller extends controller
 	 */
 	public static function create ($full_name, $email, $email_confirm, $password, $password_confirm)
 	{
+		if (recaptcha::verify () == false)
+			self::redirect_with_data ('/views/account/register.php', ['ERROR_MSG' => 'Complete the reCaptcha to login']);
+
 		$result = users::register ($full_name, $email, $email_confirm, $password, $password_confirm);
 		if (is_array ($result))
 			self::redirect_with_data ('/views/account/register.php', $result);
@@ -100,6 +107,9 @@ class users_controller extends controller
 	 */
 	public static function login ($email, $password, $remember_me)
 	{
+		if (recaptcha::verify () == false)
+			self::redirect_with_data ('/views/account/login.php', ['ERROR_MSG' => 'Complete the reCaptcha to login']);
+
 		if ($email == null)
 			self::redirect_with_data ('/views/account/login.php', ['ERROR_MSG' => 'Please enter an email']);
 

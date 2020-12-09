@@ -34,7 +34,7 @@ if (users_controller::is_logged_in () != false)
 
                 <div class="card-body text-center w-100">
 
-                    <form class="w-100" name="login" method="post" action="/controllers/users_controller.php">
+                    <form class="w-100 text-center" name="login" method="post" action="/controllers/users_controller.php">
 
                         <div class="form-group">
                             <label for="email_input">Email address</label>
@@ -50,8 +50,6 @@ if (users_controller::is_logged_in () != false)
                             <input type="checkbox" class="form-check-input" id="remeber_check" name="remember_me" value="yes">
                             <label class="form-check-label" for="remeber_check">Remember me</label>
                         </div>
-
-                        <h5>A captcha will be present</h5>
 
 						<?php if(isset($_SESSION['ERROR_MSG'])){?>
                             <div class="card text-white bg-danger mb-3">
@@ -72,6 +70,10 @@ if (users_controller::is_logged_in () != false)
                         <input name="_action" type="hidden" value="LOGIN"/>
 
                         <button type="submit" class="btn btn-primary">Login</button>
+
+                        <br><br><div class="text-center">
+                        <div class="g-recaptcha" data-sitekey="6Lf2nf4ZAAAAAE47kxcV6OQHDbUCt5aXuqE0pLSd" style="display: inline-block;">
+                        </div></div>
 
                     </form>
 

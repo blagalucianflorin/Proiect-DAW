@@ -73,6 +73,10 @@ if (users_controller::is_logged_in () != false)
 
                         <button type="submit" class="btn btn-primary">Register</button>
 
+                        <br><br><div class="text-center">
+                        <div class="g-recaptcha" data-sitekey="6Lf2nf4ZAAAAAE47kxcV6OQHDbUCt5aXuqE0pLSd" style="display: inline-block;">
+                        </div></div>
+
                     </form>
 
                 </div>
