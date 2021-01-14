@@ -27,18 +27,17 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/permissions_controller.p
                 <span class="navbar-text active"><i class="fas fa-user-tie"></i>You're an admin!</span>
 			<?php } ?>
 
+			<?php if (users_controller::is_logged_in ()) { ?>
+
             <li class="nav-item active dropdown">
 
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-hammer"></i>DEBUG
+                    <i class="fas fa-user"></i>Account
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/views/tickets/search_trains.php">Search for trains</a>
-                    <?php if (users_controller::is_logged_in ()) { ?>
                         <a class="dropdown-item" href="/views/tickets/see_tickets.php">See bought tickets</a>
                         <a class="dropdown-item" href="/views/account/account_activity.php">Account activity</a>
-                    <?php } ?>
 					<?php if (permissions_controller::is_admin ()) { ?>
                         <a class="dropdown-item" href="/views/admin/trains/select_route.php">Admin: Add Trains</a>
                         <a class="dropdown-item" href="/views/admin/routes/route_builder.php">Admin: Route Builder</a>
@@ -46,6 +45,8 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/permissions_controller.p
                 </div>
 
             </li>
+
+			<?php } ?>
 
 
             <?php

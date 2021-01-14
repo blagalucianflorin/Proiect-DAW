@@ -39,6 +39,15 @@ if (users_controller::is_logged_in () == false)
 					$tickets = tickets_controller::get_tickets ();
 					unset($_SESSION['tickets']);
 					if (count ($tickets) != 0) { ?>
+
+                    <?php if(isset($_SESSION['NORMAL_MSG'])){?>
+                        <div class="card text-white bg-info mb-3">
+                            <div class="card-body">
+                                <p class="card-text"><?php echo $_SESSION['NORMAL_MSG']; ?></p>
+                            </div>
+                        </div>
+                    <?php unset($_SESSION['NORMAL_MSG']); } ?>
+
                         <div class="table-responsive">
                         <table class="table table-stripped table-bordered" style="display: table">
                         <thead>

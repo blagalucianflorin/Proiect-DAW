@@ -178,7 +178,7 @@ error_reporting(E_ALL);
                                 <p class="card-text"><?php echo $_SESSION['ERROR_MSG']; ?></p>
                             </div>
                         </div>
-						<?php unset($_SESSION['ERROR_MSG']); } ?>
+                    <?php unset($_SESSION['ERROR_MSG']); } ?>
 
 					<?php if(isset($_SESSION['NORMAL_MSG'])){?>
                         <div class="card text-white bg-info mb-3">
@@ -186,7 +186,7 @@ error_reporting(E_ALL);
                                 <p class="card-text"><?php echo $_SESSION['NORMAL_MSG']; ?></p>
                             </div>
                         </div>
-						<?php unset($_SESSION['NORMAL_MSG']); } ?>
+                    <?php unset($_SESSION['NORMAL_MSG']); } ?>
 
                 </div>
 

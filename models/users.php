@@ -155,6 +155,17 @@ class users
 
 		return null;
 	}
+
+	public static function get_email ($user_id)
+	{
+		$db_manager = new database_manager ();
+
+		$result = $db_manager -> select ('users', ['email'], "user_id='$user_id'");
+		if (count ($result) == 1)
+			return ($result[0]['email']);
+
+		return null;
+	}
 }
 
 

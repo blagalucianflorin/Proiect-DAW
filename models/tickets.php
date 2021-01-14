@@ -18,7 +18,7 @@ class tickets
 	 * @param	int		$wagon
 	 * @param	int		$seat
 	 *
-	 * @return	mixed					True if ticket was successfully added, and a query error otherwise
+	 * @return	mixed					New ticket id ticket was successfully added, and a query error otherwise
 	 */
 	public static function buy_ticket ($user_id, $train_id, $price, $start_station, $end_station,
 									   $start_date, $end_date, $class, $wagon, $seat)
@@ -52,7 +52,18 @@ class tickets
 			]
 		);
 
-		return ($result);
+		if ($result === true)
+		{
+			$ticket_id = $db_manager -> select (
+				'tickets',
+				['ticket_id'],
+				"user_id='$user_id' AND train_id='$train_id' AND start_date='$start_date'"
+			);
+
+			return ($ticket_id[0]['ticket_id']);
+		}
+		else
+			return ($result);
 	}
 
 	/*
@@ -72,5 +83,30 @@ class tickets
 		);
 
 		return ($tickets);
+	}
+
+	public static function get_ticket ($ticket_id)
+	{
+		$db_manager = new database_manager ();
+
+		$ticket		= $db_manager -> select (
+			'tickets',
+			[
+				'ticket_id',
+				'train_id',
+				'price',
+				'wagon',
+				'seat',
+				'purchase_date',
+				'start_station',
+				'end_station',
+				'start_date',
+				'end_date',
+				'class'
+			],
+			"ticket_id='$ticket_id'"
+		);
+
+		return ($ticket[0]);
 	}
 }

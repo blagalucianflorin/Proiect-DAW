@@ -7,6 +7,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/trains_controller.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/controller.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/users_controller.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/users_activity_controller.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/pdf/pdf_manager.php');
 
 class tickets_controller
 {
@@ -44,12 +45,17 @@ class tickets_controller
 		$wagon 	= $position['wagon'];
 		$seat	= $position['seat'];
 
-		tickets::buy_ticket ($user_id, $train_id, $price, $start_station, $end_station, $start_date, $end_date,
-										$class, $wagon, $seat);
+		$ticket_id = tickets::buy_ticket ($user_id, $train_id, $price, $start_station, $end_station, $start_date,
+											$end_date, $class, $wagon, $seat);
+
+		email_manager::ticket_email (users_controller::get_email (), users_controller::get_full_name (), $ticket_id);
 
 		users_activity_controller::create ($user_id, "Bought ticket");
 
-		controller::redirect ('/');
+		controller::redirect_with_data ('/views/tickets/see_tickets.php',
+			[
+				'NORMAL_MSG' => 'The ticket has been sent to your email'
+			]);
 	}
 
 	/*
@@ -66,6 +72,14 @@ class tickets_controller
 		$tickets = tickets::get_tickets ($user_id);
 
 		return ($tickets);
+	}
+
+	/*
+	 *  Get a ticket by a given ID
+	 */
+	public static function get_ticket ($ticket_id)
+	{
+		return (tickets::get_ticket ($ticket_id));
 	}
 }
 

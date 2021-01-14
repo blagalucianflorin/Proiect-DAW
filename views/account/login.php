@@ -5,6 +5,7 @@ if (session_id () == '') session_start();
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/controller.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/controllers/users_controller.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/views/includes/essentials.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/security/recaptcha.php');
 
 if (users_controller::is_logged_in () != false)
     controller::redirect ('/');
@@ -72,7 +73,7 @@ if (users_controller::is_logged_in () != false)
                         <button type="submit" class="btn btn-primary">Login</button>
 
                         <br><br><div class="text-center">
-                        <div class="g-recaptcha" data-sitekey="6Lf2nf4ZAAAAAE47kxcV6OQHDbUCt5aXuqE0pLSd" style="display: inline-block;">
+                        <div class="g-recaptcha" data-sitekey="<?php echo recaptcha::public_key (); ?>" style="display: inline-block;">
                         </div></div>
 
                     </form>

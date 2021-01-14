@@ -1,3 +1,9 @@
+<?php
+
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/security/recaptcha.php');
+
+?>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,5 +20,22 @@
     <link rel="stylesheet" href="/views/styles/global.css">
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <script type="text/javascript">
+        var onloadCallback = function() {
+            $(".g-recaptcha").each(function() {
+                var el = $(this);
+                grecaptcha.render($(el).attr("id"), {
+                    "sitekey" : <?php echo recaptcha::invisible_public_key (); ?>,
+                    "callback" : function(token) {
+                        $(el).parent().find(".g-recaptcha-response").val(token);
+                        $(el).parent().submit();
+                    }
+                });
+            });
+        };
+    </script>
+
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 
 </head>

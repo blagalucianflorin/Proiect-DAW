@@ -220,6 +220,17 @@ class users_controller extends controller
 		$user_id = $is_logged_in;
 		return (users::get_full_name ($user_id));
 	}
+
+	public static function get_email ()
+	{
+		$is_logged_in 	= self::is_logged_in ();
+
+		if ($is_logged_in == false)
+			return null;
+
+		$user_id = $is_logged_in;
+		return (users::get_email ($user_id));
+	}
 }
 
 if (isset($_POST['_action']) || isset($_GET['_action']))
